@@ -20,6 +20,8 @@ jobs:
         with:
           repository: ${{ inputs.target_repo }}
           ref: ${{ inputs.target_branch }}
+          fetch-depth: 1
+          persist-credentials: false
           
       - name: Download deprecated endpoints data
         run: |
