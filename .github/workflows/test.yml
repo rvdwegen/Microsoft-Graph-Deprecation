@@ -15,8 +15,9 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
-          repository: microsoftgraph/microsoft-graph-docs-contrib  # Replace with actual owner/repo
+          repository: owner/target-repo-name  # Replace with actual owner/repo
           ref: ${{ inputs.target_branch }}
+          token: ${{ secrets.PAT_TOKEN }}  # Need a PAT if repo is private
           
       - name: Search for deprecated APIs
         id: search
