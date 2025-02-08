@@ -1,0 +1,408 @@
+[
+  {
+    "endpoint": "/accessReviews",
+    "method": "POST",
+    "page": "api-reference/beta/api/accessreview-create.md",
+    "title": "Create accessReview (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, create a new accessReview object."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}",
+    "method": "PATCH",
+    "page": "api-reference/beta/api/accessreview-update.md",
+    "title": "Update accessReview (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, update an existing accessReview object to change one or more of its properties."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/applyDecisions",
+    "method": "POST",
+    "page": "api-reference/beta/api/accessreview-apply.md",
+    "title": "Apply accessReview (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, apply the decisions of a completed accessReview.  The target object can be either a one-time access review, or an instance of a recurring access review.  "
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/decisions",
+    "method": "GET",
+    "page": "api-reference/beta/api/accessreview-listdecisions.md",
+    "title": "List accessReview decisions (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, retrieve the decisions of an accessReview object."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/myDecisions",
+    "method": "GET",
+    "page": "api-reference/beta/api/accessreview-listmydecisions.md",
+    "title": "List my accessReview decisions (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, retrieve the decisions of an accessReview object for the calling user as reviewer."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/resetDecisions",
+    "method": "POST",
+    "page": "api-reference/beta/api/accessreview-reset.md",
+    "title": "Reset accessReview (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, reset the decisions of a currently active accessReview.  The target object can be either a one-time access review, or an instance of a recurring access review.  Previous decisions are no longer recorded, but reviewers can continue to update decisions."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/reviewers",
+    "method": "GET",
+    "page": "api-reference/beta/api/accessreview-listreviewers.md",
+    "title": "List accessReview reviewers (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, retrieve the reviewers of an accessReview object."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/reviewers/{userId}",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/accessreview-removereviewer.md",
+    "title": "Remove accessReview reviewer (deprecated)",
+    "description": "Remove an access review reviewer."
+  },
+  {
+    "endpoint": "/accessReviews/{reviewId}/stop",
+    "method": "POST",
+    "page": "api-reference/beta/api/accessreview-stop.md",
+    "title": "Stop accessReview (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, stop a currently active accessReview.  The target object can be either a one-time access review, or an instance of a recurring access review.  (To prevent a recurring access review from starting future instances, update it to change its scheduled end date).  After the access review stops, reviewers can no longer give input, and the access review decisions can be applied."
+  },
+  {
+    "endpoint": "/accessReviews?$filter=businessFlowTemplateId",
+    "method": "GET",
+    "page": "api-reference/beta/api/accessreview-list.md",
+    "title": "List accessReviews (deprecated)",
+    "description": "Retrieve accessReview objects for a businessFlowTemplate."
+  },
+  {
+    "endpoint": "/businessFlowTemplates",
+    "method": "GET",
+    "page": "api-reference/beta/api/businessflowtemplate-list.md",
+    "title": "List businessFlowTemplates (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, list all the businessFlowTemplate objects."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/bulkReprovisionCloudPc",
+    "method": "POST",
+    "page": "api-reference/beta/api/manageddevice-bulkreprovisioncloudpc.md",
+    "title": "managedDevice: bulkReprovisionCloudPc (deprecated)",
+    "description": "Bulk reprovision a set of Cloud PC devices with Intune managed device IDs."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/bulkRestoreCloudPc",
+    "method": "POST",
+    "page": "api-reference/beta/api/manageddevice-bulkrestorecloudpc.md",
+    "title": "managedDevice: bulkRestoreCloudPc (deprecated)",
+    "description": "Restore multiple Cloud PC devices with a single request that includes the IDs of Intune managed devices and a restore point date and time."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/bulkSetCloudPcReviewStatus",
+    "method": "POST",
+    "page": "api-reference/beta/api/manageddevice-bulksetcloudpcreviewstatus.md",
+    "title": "managedDevice: bulkSetCloudPcReviewStatus (deprecated)",
+    "description": "Set the review status of multiple Cloud PC devices with a single request that includes the IDs of Intune managed devices."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/{managedDeviceId}/getCloudPcRemoteActionResults",
+    "method": "GET",
+    "page": "api-reference/beta/api/manageddevice-getcloudpcremoteactionresults.md",
+    "title": "managedDevice: getCloudPcRemoteActionResults (deprecated)",
+    "description": "Check the Cloud PC-specified remote action status for a Cloud PC device."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/{managedDeviceId}/getCloudPcReviewStatus",
+    "method": "GET",
+    "page": "api-reference/beta/api/manageddevice-getcloudpcreviewstatus.md",
+    "title": "managedDevice: getCloudPcReviewStatus (deprecated)",
+    "description": "Get the review status of a specific Cloud PC device."
+  },
+  {
+    "endpoint": "/deviceManagement/managedDevices/{managedDeviceId}/setCloudPcReviewStatus",
+    "method": "POST",
+    "page": "api-reference/beta/api/manageddevice-setcloudpcreviewstatus.md",
+    "title": "managedDevice: setCloudPcReviewStatus (deprecated)",
+    "description": "Set the review status of a specific Cloud PC device."
+  },
+  {
+    "endpoint": "/deviceManagement/virtualEndpoint/cloudPCs/bulkResize",
+    "method": "POST",
+    "page": "api-reference/beta/api/cloudpc-bulkresize.md",
+    "title": "cloudPC: bulkResize (deprecated)",
+    "description": "Bulk resizes a set of Cloud PC devices."
+  },
+  {
+    "endpoint": "/deviceManagement/virtualEndpoint/reports/getCloudPCPerformanceReport",
+    "method": "POST",
+    "page": "api-reference/beta/api/cloudpcreports-getcloudpcperformancereport.md",
+    "title": "cloudPcReports: getCloudPCPerformanceReport (deprecated)",
+    "description": "Get a report related to the performance of Cloud PCs."
+  },
+  {
+    "endpoint": "/deviceManagement/virtualEndpoint/reports/getConnectionQualityReports",
+    "method": "POST",
+    "page": "api-reference/beta/api/cloudpcreports-getconnectionqualityreports.md",
+    "title": "cloudPcReports: getConnectionQualityReports (deprecated)",
+    "description": "Get the overall connection quality reports for all devices within a current tenant during a given time period, including metrics like the average round trip time (P50), average available bandwidth, and UDP connection percentage."
+  },
+  {
+    "endpoint": "/deviceManagement/virtualEndpoint/reports/getSharedUseLicenseUsageReport",
+    "method": "POST",
+    "page": "api-reference/beta/api/cloudpcreports-getshareduselicenseusagereport.md",
+    "title": "cloudPcReports: getSharedUseLicenseUsageReport (deprecated)",
+    "description": "Get the shared use license usage reports, such as servicePlanId, licenseCount, and claimedLicenseCount, for real-time, 7 days, or 28 days trend."
+  },
+  {
+    "endpoint": "/deviceManagement/virtualEndpoint/snapshots",
+    "method": "GET",
+    "page": "api-reference/beta/api/virtualendpoint-list-snapshots.md",
+    "title": "List snapshots (deprecated)",
+    "description": "Get a list of cloudPcSnapshot objects and their properties."
+  },
+  {
+    "endpoint": "/identity/b2cUserFlows/{id}/identityProviders",
+    "method": "GET",
+    "page": "api-reference/beta/api/b2cidentityuserflow-list-identityproviders.md",
+    "title": "List all identityProviders in a b2cIdentityUserFlow (deprecated)",
+    "description": "List all identityProviders in a b2cIdentityUserFlow. (deprecated)"
+  },
+  {
+    "endpoint": "/identity/b2cUserFlows/{id}/identityProviders/$ref",
+    "method": "POST",
+    "page": "api-reference/beta/api/b2cidentityuserflow-post-identityproviders.md",
+    "title": "Add identityProvider to a b2cIdentityUserFlow (deprecated)",
+    "description": "Add identityProvider to a b2cIdentityUserFlow. (deprecated)"
+  },
+  {
+    "endpoint": "/identity/b2cUserFlows/{id}/identityProviders/{id}/$ref",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/b2cidentityuserflow-delete-identityproviders.md",
+    "title": "Delete identityProvider from a b2cIdentityUserFlow (deprecated)",
+    "description": "Delete an identityProvider from a b2cIdentityUserFlow. (deprecated)"
+  },
+  {
+    "endpoint": "/identity/b2xUserFlows/{id}/identityProviders",
+    "method": "GET",
+    "page": "api-reference/beta/api/b2xidentityuserflow-list-identityproviders.md",
+    "title": "List all identityProviders in a b2xIdentityUserFlow (deprecated)",
+    "description": "List all identityProviders in a b2xIdentityUserFlow (deprecated)."
+  },
+  {
+    "endpoint": "/identity/b2xUserFlows/{id}/identityProviders/$ref",
+    "method": "POST",
+    "page": "api-reference/beta/api/b2xidentityuserflow-post-identityproviders.md",
+    "title": "Add identityProvider to a b2xIdentityUserFlow (deprecated)",
+    "description": "Add identityProvider in a b2xIdentityUserFlow (deprecated)."
+  },
+  {
+    "endpoint": "/identity/b2xUserFlows/{id}/identityProviders/{id}/$ref",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/b2xidentityuserflow-delete-identityproviders.md",
+    "title": "Delete identityProvider from b2xIdentityUserFlow (deprecated)",
+    "description": "Delete an identityProvider from a b2xIdentityUserFlow. (deprecated)"
+  },
+  {
+    "endpoint": "/identity/userFlows",
+    "method": "GET",
+    "page": "api-reference/beta/api/identityuserflow-list.md",
+    "title": "List userFlows (deprecated)",
+    "description": "Retrieve a list of userFlow objects."
+  },
+  {
+    "endpoint": "/identity/userFlows/{id}",
+    "method": "GET",
+    "page": "api-reference/beta/api/identityuserflow-get.md",
+    "title": "Get userFlow (deprecated)",
+    "description": "Retrieve the properties and relationships of userflow object."
+  },
+  {
+    "endpoint": "/informationProtection/policy/labels",
+    "method": "GET",
+    "page": "api-reference/beta/api/informationprotectionpolicy-list-labels.md",
+    "title": "informationProtectionLabel: listLabels (deprecated)",
+    "description": "Retrieve a list of information protection labels. Deprecated."
+  },
+  {
+    "endpoint": "/informationProtection/policy/labels/evaluateClassificationResults",
+    "method": "POST",
+    "page": "api-reference/beta/api/informationprotectionlabel-evaluateclassificationresults.md",
+    "title": "informationProtectionLabel: evaluateClassificationResults (deprecated)",
+    "description": "Evaluate which label to apply based on existing content info and a classification result. Deprecated."
+  },
+  {
+    "endpoint": "/informationProtection/policy/labels/evaluateRemoval",
+    "method": "POST",
+    "page": "api-reference/beta/api/informationprotectionlabel-evaluateremoval.md",
+    "title": "informationProtectionLabel: evaluateRemoval (deprecated)",
+    "description": "Evaluate which label to remove and how to remove it based on existing content info. Deprecated."
+  },
+  {
+    "endpoint": "/informationProtection/policy/labels/{id}",
+    "method": "GET",
+    "page": "api-reference/beta/api/informationprotectionlabel-get.md",
+    "title": "Get informationProtectionLabel (deprecated)",
+    "description": "Retrieve the properties and relationships of the specified informationProtectionLabel object. Deprecated."
+  },
+  {
+    "endpoint": "/informationprotection/policy/labels/extractLabel",
+    "method": "POST",
+    "page": "api-reference/beta/api/informationprotectionlabel-extractlabel.md",
+    "title": "informationProtectionLabel: extractLabel (deprecated)",
+    "description": "Retrieve informationProtectionContentLabel using metadata from a labeled object. Deprecated."
+  },
+  {
+    "endpoint": "/me/informationProtection/policy/labels",
+    "method": "GET",
+    "page": "api-reference/beta/api/informationprotectionpolicy-list-labels.md",
+    "title": "informationProtectionLabel: listLabels (deprecated)",
+    "description": "Retrieve a list of information protection labels. Deprecated."
+  },
+  {
+    "endpoint": "/me/informationProtection/policy/labels/{id}",
+    "method": "GET",
+    "page": "api-reference/beta/api/informationprotectionlabel-get.md",
+    "title": "Get informationProtectionLabel (deprecated)",
+    "description": "Retrieve the properties and relationships of the specified informationProtectionLabel object. Deprecated."
+  },
+  {
+    "endpoint": "/me/notifications/",
+    "method": "POST",
+    "page": "api-reference/beta/api/user-post-notifications.md",
+    "title": "Create and send a notification (deprecated)",
+    "description": "Create and send a notification targeting a user through Microsoft Graph."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches",
+    "method": "POST",
+    "page": "api-reference/beta/api/networkaccess-connectivity-post-branches.md",
+    "title": "Create branch (deprecated)",
+    "description": "Create a new branch."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}",
+    "method": "GET",
+    "page": "api-reference/beta/api/networkaccess-branchsite-get.md",
+    "title": "Get branchSite (deprecated)",
+    "description": "Retrieve information about a specific branch."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}/",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/networkaccess-branchsite-delete.md",
+    "title": "Delete branchSite (deprecated)",
+    "description": "Delete a specific branch."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}/connectivityConfiguration",
+    "method": "GET",
+    "page": "api-reference/beta/api/networkaccess-branchconnectivityconfiguration-get.md",
+    "title": "Get branchConnectivityConfiguration (deprecated)",
+    "description": "Retrieve the IPSec tunnel configuration required to establish a bidirectional communication link between your organization's router and Microsoft's gateway."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}/deviceLinks",
+    "method": "GET",
+    "page": "api-reference/beta/api/networkaccess-branchsite-list-devicelinks.md",
+    "title": "List deviceLinks (deprecated)",
+    "description": "Retrieve a list of device links associated with a specific branch."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}/deviceLinks/{deviceLinkId}",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/networkaccess-branchsite-delete-devicelinks.md",
+    "title": "Delete deviceLink (deprecated)",
+    "description": "Removes the link between the branch or remote network and the CPE device, effectively removing the connection and associated configuration between them."
+  },
+  {
+    "endpoint": "/networkAccess/connectivity/branches/{branchSiteId}/forwardingProfiles",
+    "method": "PATCH",
+    "page": "api-reference/beta/api/networkaccess-forwardingprofile-update.md",
+    "title": "Update forwardingProfile",
+    "description": "Update an existing forwarding profile."
+  },
+  {
+    "endpoint": "/networkAccess/forwardingProfiles/{forwardingProfileId}",
+    "method": "PATCH",
+    "page": "api-reference/beta/api/networkaccess-forwardingprofile-update.md",
+    "title": "Update forwardingProfile",
+    "description": "Update an existing forwarding profile."
+  },
+  {
+    "endpoint": "/organization/{organizationId}/settings/itemInsights",
+    "method": "GET",
+    "page": "api-reference/beta/api/organizationsettings-list-iteminsights.md",
+    "title": "List itemInsights (deprecated)",
+    "description": "Retrieve properties of insightsSettings object for displaying or returning item insights in an organization."
+  },
+  {
+    "endpoint": "/policies/authenticationStrengthPolicies/findByMethodMode(authenticationMethodModes={authenticationMethodMode})",
+    "method": "GET",
+    "page": "api-reference/beta/api/authenticationstrengthpolicy-findbymethodmode.md",
+    "title": "authenticationStrengthPolicy: findByMethodMode (deprecated)",
+    "description": "Get authentication strength policies that include the specified authentication method modes."
+  },
+  {
+    "endpoint": "/programControlTypes",
+    "method": "GET",
+    "page": "api-reference/beta/api/programcontroltype-list.md",
+    "title": "List programControlTypes (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, list all the programControlType objects."
+  },
+  {
+    "endpoint": "/programControls",
+    "method": "POST",
+    "page": "api-reference/beta/api/programcontrol-create.md",
+    "title": "Create programControl (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, create a new programControl object.  This links an access review to a program."
+  },
+  {
+    "endpoint": "/programControls/{id}",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/programcontrol-delete.md",
+    "title": "Delete programControl (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, delete a programControl object.  This unlinks an access review from a program."
+  },
+  {
+    "endpoint": "/programs",
+    "method": "POST",
+    "page": "api-reference/beta/api/program-create.md",
+    "title": "Create program (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, create a new program object."
+  },
+  {
+    "endpoint": "/programs/{id}",
+    "method": "DELETE",
+    "page": "api-reference/beta/api/program-delete.md",
+    "title": "Delete program (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, delete a program object."
+  },
+  {
+    "endpoint": "/programs/{programId}",
+    "method": "PATCH",
+    "page": "api-reference/beta/api/program-update.md",
+    "title": "Update program (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, update an existing program object."
+  },
+  {
+    "endpoint": "/programs/{programId}/controls",
+    "method": "GET",
+    "page": "api-reference/beta/api/program-listcontrols.md",
+    "title": "List programControls of a program (deprecated)",
+    "description": "In the Microsoft Entra access reviews feature, list all the programControl objects, linked to a particular program."
+  },
+  {
+    "endpoint": "/security/cases/ediscoveryCases/{ediscoveryCaseId}/operations/{eDiscoveryCaseOperationId}/microsoft.graph.security.ediscoveryExportOperation/getDownloadUrl",
+    "method": "GET",
+    "page": "api-reference/beta/api/security-ediscoveryexportoperation-getdownloadurl.md",
+    "title": "ediscoveryExportOperation: getDownloadUrl (deprecated)",
+    "description": "Return a download URL from where the export content is delivered as a stream."
+  },
+  {
+    "endpoint": "/users/{id",
+    "method": "GET",
+    "page": "api-reference/beta/api/informationprotectionlabel-get.md",
+    "title": "Get informationProtectionLabel (deprecated)",
+    "description": "Retrieve the properties and relationships of the specified informationProtectionLabel object. Deprecated."
+  },
+  {
+    "endpoint": "/users/{id}/informationProtection/policy/labels/evaluateApplication",
+    "method": "POST",
+    "page": "api-reference/beta/api/informationprotectionlabel-evaluateapplication.md",
+    "title": "informationProtectionLabel: evaluateApplication (deprecated)",
+    "description": "Evaluate which label to apply based on existing content info and desired content state. Deprecated."
+  }
+]
