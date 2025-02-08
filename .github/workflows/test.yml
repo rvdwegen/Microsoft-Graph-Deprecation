@@ -29,53 +29,55 @@ jobs:
           # Create results directory
           mkdir -p results
           
-          # Perform deprecated search and save results
+          # Initialize files
           echo "### Deprecated API Files Found ($(date '+%Y-%m-%d'))" > results/report.md
           echo "Branch: ${{ inputs.target_branch }}" >> results/report.md
           echo "" >> results/report.md
           echo "Files containing '(deprecated)' in title:" >> results/report.md
-          echo "\`\`\`" >> results/report.md
+          echo '```' >> results/report.md
           
-          # Create endpoints array
+          # Create empty endpoints file
           echo "[]" > results/endpoints.json
+          touch results/temp_endpoints.txt
+          
+          # Find all deprecated files first
+          find api-reference/beta/api -name "*.md" -type f -exec grep -l "title:.*\(deprecated\)" {} \; > results/files.txt
           
           # Process each file
-          find api-reference/beta/api -name "*.md" -type f -exec sh -c '
-            if grep -l "title:.*\(deprecated\)" "$1" > /dev/null; then
-              echo "$1" >> results/files.txt
-              
+          while IFS= read -r file; do
+            if [ -f "$file" ]; then
               # Extract title and description
-              TITLE=$(grep "^title:" "$1" | sed '"'"'s/^title: *"//;s/"$//''"'"')
-              DESC=$(grep "^description:" "$1" | sed '"'"'s/^description: *"//;s/"$//''"'"')
+              title=$(grep "^title:" "$file" | sed 's/^title: *"//;s/"$//')
+              description=$(grep "^description:" "$file" | sed 's/^description: *"//;s/"$//')
               
-              # Find HTTP endpoints in code blocks
-              awk -v file="$1" -v title="$TITLE" -v desc="$DESC" '"'"'
+              # Process HTTP endpoints
+              awk -v filepath="$file" -v title="$title" -v desc="$description" '
                 BEGIN { in_block=0 }
                 /^```\s*http/ { in_block=1; next }
                 /^```/ { in_block=0; next }
                 in_block && /^(GET|POST|PUT|PATCH|DELETE)\s+\/[a-zA-Z0-9\/\-_{}]+/ {
                   endpoint=$2
                   method=$1
-                  printf "{\"endpoint\":\"%s\",\"method\":\"%s\",\"page\":\"%s\",\"title\":%s,\"description\":%s},\n", 
+                  printf "{\"endpoint\":\"%s\",\"method\":\"%s\",\"page\":\"%s\",\"title\":\"%s\",\"description\":\"%s\"},\n", 
                     endpoint, 
                     method, 
-                    file,
-                    "\""title"\"",
-                    "\""desc"\""
+                    filepath,
+                    title,
+                    desc
                 }
-              '"'"' "$1" >> results/temp_endpoints.txt
+              ' "$file" >> results/temp_endpoints.txt
             fi
-          '"'"' - {} \;
+          done < results/files.txt
           
-          # Create proper JSON array
-          if [ -f results/temp_endpoints.txt ]; then
-            (echo "["; cat results/temp_endpoints.txt | sed '"'"'$ s/,$//''"'"'; echo "]") | \
-            jq '"'"'unique_by(.endpoint)'"'"' > results/endpoints.json
+          # Create final JSON array
+          if [ -s results/temp_endpoints.txt ]; then
+            (echo "["; cat results/temp_endpoints.txt | sed '$ s/,$//' ; echo "]") | \
+            jq 'unique_by(.endpoint)' > results/endpoints.json
           fi
           
-          # Add results to report
+          # Complete the report
           cat results/files.txt >> results/report.md
-          echo "\`\`\`" >> results/report.md
+          echo '```' >> results/report.md
           
           # Add summary
           COUNT=$(wc -l < results/files.txt)
@@ -83,7 +85,7 @@ jobs:
           echo "" >> results/report.md
           echo "Total files found: $COUNT" >> results/report.md
           
-          # Move results to workflow repo
+          # Copy to workflow repo
           cp results/endpoints.json workflow-repo/
           
       - name: Commit and push endpoints file
