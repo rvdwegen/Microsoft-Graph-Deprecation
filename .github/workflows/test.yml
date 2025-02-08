@@ -15,8 +15,13 @@ jobs:
       - name: Checkout target repository
         uses: actions/checkout@v4
         with:
-          repository: microsoftgraph/microsoft-graph-docs-contrib  # Replace with actual owner/repo
+          repository: microsoftgraph/microsoft-graph-docs-contrib
           ref: ${{ inputs.target_branch }}
+          
+      - name: Checkout workflow repository
+        uses: actions/checkout@v4
+        with:
+          path: workflow-repo
           
       - name: Search for deprecated APIs and endpoints
         id: search
@@ -31,65 +36,64 @@ jobs:
           echo "Files containing '(deprecated)' in title:" >> results/report.md
           echo "\`\`\`" >> results/report.md
           
-          # Main search command with error handling
-          if ! find api-reference/beta/api -name "*.md" -type f -exec grep -l "title:.*\(deprecated\)" {} \; > results/files.txt; then
-            echo "::error::Search command failed"
-            exit 1
-          fi
+          # Create endpoints array
+          echo "[]" > results/endpoints.json
           
-          # Count files and store as output
-          COUNT=$(wc -l < results/files.txt)
-          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+          # Process each file
+          find api-reference/beta/api -name "*.md" -type f -exec sh -c '
+            if grep -l "title:.*\(deprecated\)" "$1" > /dev/null; then
+              echo "$1" >> results/files.txt
+              
+              # Extract title and description
+              TITLE=$(grep "^title:" "$1" | sed '"'"'s/^title: *"//;s/"$//''"'"')
+              DESC=$(grep "^description:" "$1" | sed '"'"'s/^description: *"//;s/"$//''"'"')
+              
+              # Find HTTP endpoints in code blocks
+              awk -v file="$1" -v title="$TITLE" -v desc="$DESC" '"'"'
+                BEGIN { in_block=0 }
+                /^```\s*http/ { in_block=1; next }
+                /^```/ { in_block=0; next }
+                in_block && /^(GET|POST|PUT|PATCH|DELETE)\s+\/[a-zA-Z0-9\/\-_{}]+/ {
+                  endpoint=$2
+                  method=$1
+                  printf "{\"endpoint\":\"%s\",\"method\":\"%s\",\"page\":\"%s\",\"title\":%s,\"description\":%s},\n", 
+                    endpoint, 
+                    method, 
+                    file,
+                    "\""title"\"",
+                    "\""desc"\""
+                }
+              '"'"' "$1" >> results/temp_endpoints.txt
+            fi
+          '"'"' - {} \;
+          
+          # Create proper JSON array
+          if [ -f results/temp_endpoints.txt ]; then
+            (echo "["; cat results/temp_endpoints.txt | sed '"'"'$ s/,$//''"'"'; echo "]") | \
+            jq '"'"'unique_by(.endpoint)'"'"' > results/endpoints.json
+          fi
           
           # Add results to report
           cat results/files.txt >> results/report.md
           echo "\`\`\`" >> results/report.md
           
           # Add summary
+          COUNT=$(wc -l < results/files.txt)
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
           echo "" >> results/report.md
           echo "Total files found: $COUNT" >> results/report.md
-
-          # Create endpoints.json for storing HTTP endpoints
-          echo "[]" > results/endpoints.json
           
-          # Process each deprecated file to find HTTP endpoints
-          while IFS= read -r file; do
-            if [ -f "$file" ]; then
-              # Find all HTTP method patterns and their endpoints
-              # Using awk to handle multiline matching and JSON creation
-              awk '
-              BEGIN { ORS="" }
-              /^```\s*http/ {
-                in_block=1
-                next
-              }
-              /^```/ {
-                if(in_block) in_block=0
-                next
-              }
-              in_block && /^(GET|POST|PUT|PATCH|DELETE)\s+\/[a-zA-Z0-9\/\-_]+/ {
-                endpoint=$2
-                method=$1
-                printf "{\"endpoint\":\"%s\",\"method\":\"%s\",\"page\":\"%s\"},\n", endpoint, method, FILENAME
-              }
-              ' "$file" >> results/temp_endpoints.txt
-            fi
-          done < results/files.txt
-
-          # Create proper JSON array with deduplication using jq
-          if [ -f results/temp_endpoints.txt ]; then
-            # Remove trailing comma, wrap in array, and deduplicate based on endpoint
-            (echo "["; cat results/temp_endpoints.txt | sed '$ s/,$//' ; echo "]") | \
-            jq 'unique_by(.endpoint)' > results/endpoints.json
-          fi
-
-          # Cleanup
-          rm -f results/temp_endpoints.txt
-
-          # Add endpoint count to report
-          ENDPOINT_COUNT=$(jq '. | length' results/endpoints.json)
-          echo "" >> results/report.md
-          echo "Unique endpoints found: $ENDPOINT_COUNT" >> results/report.md
+          # Move results to workflow repo
+          cp results/endpoints.json workflow-repo/
+          
+      - name: Commit and push endpoints file
+        run: |
+          cd workflow-repo
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git add endpoints.json
+          git commit -m "Update deprecated endpoints list [skip ci]" || exit 0
+          git push
 
       - name: Upload results as artifact
         if: always()
