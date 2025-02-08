@@ -411,5 +411,12 @@
     "page": "api-reference/beta/api/informationprotectionlabel-evaluateapplication.md",
     "title": "informationProtectionLabel: evaluateApplication (deprecated)",
     "description": "Evaluate which label to apply based on existing content info and desired content state. Deprecated."
+  },
+  {
+    "endpoint": "/users/{id}/authentication/requirements",
+    "method": "GET",
+    "page": "dummy.md",
+    "title": "dummy (deprecated)",
+    "description": "dummy. Deprecated."
   }
 ]
