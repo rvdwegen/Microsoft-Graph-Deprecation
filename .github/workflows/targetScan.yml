@@ -49,13 +49,13 @@ jobs:
             method=$(echo "$endpoint_data" | jq -r '.method')
             
             # Convert endpoint pattern to regex
-            # Replace {varName} with [^/]+ for matching
-            search_pattern=$(echo "$endpoint" | sed 's/{[^}]*}/[^\/]\+/g')
+            # Remove leading slash and replace {varName} with wildcard
+            search_pattern=$(echo "$endpoint" | sed 's/^\///; s/{[^}]*}/[^\/]\+/g')
             
             echo "Scanning for endpoint: $endpoint"
             
-            # Find PS1 files containing the endpoint
-            found_files=$(find . -type f -name "*.ps1" -exec grep -l "$search_pattern" {} \; || true)
+            # Find PS1 files containing the endpoint (with or without leading slash)
+            found_files=$(find . -type f -name "*.ps1" -exec grep -l -E "(\"|\')?\/?${search_pattern}(\"|\')?" {} \; || true)
             
             if [ ! -z "$found_files" ]; then
               # Add to markdown report
