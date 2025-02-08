@@ -58,11 +58,17 @@ jobs:
                 BEGIN { in_block=0 }
                 /^```\s*http/ { in_block=1; next }
                 /^```/ { in_block=0; next }
-                in_block && /^(GET|POST|PUT|PATCH|DELETE)\s+\/[a-zA-Z0-9\/\-_{}]+/ {
-                  endpoint=$2
+                in_block && /^(GET|POST|PUT|PATCH|DELETE)\s+\/[a-zA-Z0-9\/\-_{}|\s]+/ {
+                  # Store the full line
+                  line=$0
+                  # Get the method (first field)
                   method=$1
+                  # Get everything after the method as the endpoint
+                  sub(/^[^ ]+ /, "", line)
+                  # Clean up any trailing whitespace
+                  sub(/[[:space:]]*$/, "", line)
                   printf "{\"endpoint\":\"%s\",\"method\":\"%s\",\"page\":\"%s\",\"title\":\"%s\",\"description\":\"%s\"},\n", 
-                    endpoint, 
+                    line,
                     method, 
                     filepath,
                     title,
