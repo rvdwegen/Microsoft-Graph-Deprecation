@@ -1,0 +1,112 @@
+name: Scan Repository for Deprecated Graph Usage
+on:
+  workflow_dispatch:
+    inputs:
+      target_repo:
+        description: 'Repository to scan (format: owner/repo)'
+        required: true
+      target_branch:
+        description: 'Branch to scan'
+        default: 'main'
+        required: true
+
+jobs:
+  scan-repo:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.target_repo }}
+          ref: ${{ inputs.target_branch }}
+          
+      - name: Download deprecated endpoints data
+        run: |
+          curl -s https://raw.githubusercontent.com/rvdwegen/Microsoft-Graph-Deprecation/main/endpoints.json > deprecated_endpoints.json
+          
+      - name: Scan for endpoint usage
+        id: scan
+        run: |
+          mkdir -p results
+          
+          # Initialize report
+          echo "# Deprecated Graph Endpoint Usage Report" > results/usage_report.md
+          echo "Repository: ${{ inputs.target_repo }}" >> results/usage_report.md
+          echo "Branch: ${{ inputs.target_branch }}" >> results/usage_report.md
+          echo "Scan Date: $(date '+%Y-%m-%d')" >> results/usage_report.md
+          echo "" >> results/usage_report.md
+          
+          # Create JSON structure for detailed results
+          echo "[]" > results/usage_details.json
+          
+          # Process each endpoint and create search patterns
+          jq -r '.[] | @base64' deprecated_endpoints.json | while read -r endpoint_json; do
+            # Decode endpoint data
+            endpoint_data=$(echo "$endpoint_json" | base64 --decode)
+            
+            # Extract endpoint details
+            endpoint=$(echo "$endpoint_data" | jq -r '.endpoint')
+            title=$(echo "$endpoint_data" | jq -r '.title')
+            method=$(echo "$endpoint_data" | jq -r '.method')
+            
+            # Convert endpoint pattern to regex
+            # Replace {varName} with [^/]+ for matching
+            search_pattern=$(echo "$endpoint" | sed 's/{[^}]*}/[^\/]\+/g')
+            
+            echo "Scanning for endpoint: $endpoint"
+            
+            # Find PS1 files containing the endpoint
+            found_files=$(find . -type f -name "*.ps1" -exec grep -l "$search_pattern" {} \; || true)
+            
+            if [ ! -z "$found_files" ]; then
+              # Add to markdown report
+              echo "## Endpoint: $endpoint" >> results/usage_report.md
+              echo "- Method: $method" >> results/usage_report.md
+              echo "- Title: $title" >> results/usage_report.md
+              echo "" >> results/usage_report.md
+              echo "Found in files:" >> results/usage_report.md
+              
+              # Process each file
+              echo "$found_files" | while read -r file; do
+                if [ ! -z "$file" ]; then
+                  # Add to markdown report
+                  echo "- \`$file\`" >> results/usage_report.md
+                  
+                  # Create JSON entry
+                  printf '{
+                    "endpoint": %s,
+                    "method": %s,
+                    "title": %s,
+                    "file": "%s"
+                  },\n' \
+                    "$(echo "$endpoint" | jq -R .)" \
+                    "$(echo "$method" | jq -R .)" \
+                    "$(echo "$title" | jq -R .)" \
+                    "$file" >> results/temp_usage_details.json
+                fi
+              done
+              
+              echo "" >> results/usage_report.md
+            fi
+          done
+          
+          # Finalize JSON file
+          if [ -f results/temp_usage_details.json ]; then
+            (echo "["; cat results/temp_usage_details.json | sed '$ s/,$//' ; echo "]") > results/usage_details.json
+          fi
+          
+          # Add summary
+          TOTAL_USAGES=$(grep -c "^## Endpoint:" results/usage_report.md || echo "0")
+          echo "### Summary" >> results/usage_report.md
+          echo "Total deprecated endpoints found in use: $TOTAL_USAGES" >> results/usage_report.md
+          
+          # Cleanup
+          rm -f results/temp_usage_details.json
+
+      - name: Upload scan results
+        uses: actions/upload-artifact@v4
+        with:
+          name: deprecated-endpoint-usage
+          path: results/
+          retention-days: 90
